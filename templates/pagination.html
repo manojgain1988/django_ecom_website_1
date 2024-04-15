@@ -1,0 +1,15 @@
+
+{% if objcet_list.has_previous %}
+<a href="?page={{objcet_list.previous_page_number}}"> < </a>
+
+{% endif %}
+
+{% for page in paginator.page_range %}
+{% if objcet_list.number > page|add:"-5"  and  objcet_list.number < page|add:"+5" %}
+<a href="?page={{page}}" class="{% if page == objcet_list.number %} active {% endif %}">{{page}}</a>
+{% endif %}
+{% endfor %}
+
+{% if objcet_list.has_next %}
+<a href="?page={{objcet_list.next__page_number}}"> > </a>
+{% endif %}

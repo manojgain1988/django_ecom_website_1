@@ -1,0 +1,67 @@
+{% extends "base.html" %} {% load static %} 
+{% block title %}Login{% endblock title %}
+ {% block content %}
+
+<!-- Page Add Section Begin -->
+<section >
+  <div class="container text-center py-3">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-breadcrumb">
+          <h3>Login to your account</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Page Add Section End -->
+
+<!-- Contact Section Begin -->
+<div>
+  <div class="container w-50">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="contact-form " method="POST" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                            {% if messages %}
+                        <div class="col-lg-12 py-1"> 
+                            {% include "message.html" %}
+                        </div>
+                        {% endif %}
+                        <div class="col-lg-12 py-1">
+                            <input type="text" name="username" placeholder="Enter  Username/Email"/>
+                            {{form.username.errors}}
+                        </div>
+
+                        <div class="col-lg-12 py-1">
+                            <input type="password" name="password" placeholder="Enter Password" />
+                            {{form.password.errors}}
+                        </div>
+
+
+                        <div class="col-lg-12 text-right">
+                          <p><strong class="ml-2">  
+                              <a class="text-decoration-none text-dark" href="{% url "password_reset" %}">Forgot Password</a> here
+                          </strong></p>
+                      </div>
+
+                        <div class="col-lg-12">
+                            <button class="  btn-block " type="submit">Login</button>
+                        </div>
+
+                        <div class="col-lg-12 text-center my-3">
+                            <p> Don't have an account ? Please  
+                            <strong class="ml-2">  
+                                <a class="text-decoration-none text-dark" href="{% url "registration" %}">Sign Up</a> here
+                            </strong></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Section End -->
+
+{% endblock content %}

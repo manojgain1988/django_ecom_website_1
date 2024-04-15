@@ -1,0 +1,144 @@
+{% extends "base.html" %} {% load static %} {% block title %}checkout{% endblock title %} {% block content %}
+<!-- Page Add Section Begin -->
+<section>
+  <div class="container text-center py-3 mb-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-breadcrumb">
+          <h3>Checkout</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Page Add Section End -->
+
+<!-- Contact Section Begin -->
+<div>
+  <div class="container w-50">
+    <div class="row">
+      <div class="col-lg-12">
+        <form id="checkout-form" class="contact-form" method="POST" novalidate>
+          {% csrf_token %}
+          <div class="row">
+            {% if messages %}
+            <div class="col-lg-12">{% include "message.html" %}</div>
+            {% endif %}
+
+            <div class="col-lg-12">
+              <input
+                type="text"
+                name="first_name"
+                placeholder="Your First Name :"
+              />
+              <small id="error_first_name" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <input
+                type="text"
+                name="last_name"
+                placeholder=" Your Last Name :"
+              />
+              <small id="error_last_name" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <input
+                type="text"
+                name="email"
+                placeholder="Your Email Address :"
+              />
+              <small id="error_email" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <input type="text" name="city" placeholder="Your City :" />
+              <small id="error_city" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <input
+                type="text"
+                name="zip_code"
+                placeholder=" Your Zip Code :"
+              />
+              <small id="error_zip_code" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <input
+                type="text"
+                name="address"
+                placeholder="Your Shipping Address :"
+              />
+              <small id="error_address" class="text-danger"></small>
+            </div>
+
+            <div class="col-lg-12">
+              <button class="btn-block" type="submit">Payment</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Contact Section End -->
+{% endblock content %} {% block extra_script %}
+
+<script>
+  const form = document.getElementById("checkout-form");
+  const csrfmiddlewaretoken = document.querySelector(
+    "[name=csrfmiddlewaretoken]"
+  ).value;
+  let formIsValid = false;
+
+  const validateFormAndCheckout = () => {
+    const url = "/checkout/";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfmiddlewaretoken,
+      },
+      body: new FormData(form),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          formIsValid = true;
+          new FormData(form).forEach((value, key) => {
+            if (key != "csrfmiddlewaretoken") {
+              document.getElementById(`error_${key}`).innerText = "";
+            }
+          });
+          console.log('valid');
+        } 
+        else {
+          let errors = data.errors;
+          formIsValid = false;
+          new FormData(form).forEach((value, key) => {
+            if (key != "csrfmiddlewaretoken") {
+              document.getElementById(`error_${key}`).innerText = "";
+            }
+          }); 
+          Object.keys(errors).forEach((key) => {
+            document.getElementById(`error_${key}`).innerText =
+              errors[key].join("");
+          });
+          console.log('invalid');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    validateFormAndCheckout();
+  });
+</script>
+{% endblock extra_script %}

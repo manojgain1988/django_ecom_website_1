@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% load static %}
+<title>{% block title %}Home{% endblock title %}</title>
+
+{% block content %} {% include "slider.html" %}
+
+
+
+<!-- Latest Product Begin -->
+<section class="latest-products spad mt-5">
+  <div class="container">
+        <div class="product-filter">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+            <div class="section-title">
+                <h2>Featured Categories</h2>
+            </div>
+                <ul class="product-controls">
+                    <li data-filter="*">All</li>
+
+                    {% for category in featured_categories %}
+                    <li data-filter=".{{category.slug}}">{{category.title | title}}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        </div>
+
+        <div class="row" id="product-list">
+            {% for category in featured_categories %}
+            {% for product in category.products.all %}
+                <div class="col-lg-3 col-sm-6 mix {{category.slug}}">
+                        <div class="single-product-item">
+                            <figure>
+                                <a href="{% url 'productdetails'  product.slug %}"><img style="height:180px;" src="{{product.thumbnail}}" alt=""></a>
+                            </figure>
+                            <div class="product-text">
+                              <a class="text-decoration-none" href="{% url 'productdetails' product.slug %}"><h6>{{product.title | truncatewords:5 }}</h6></a>
+                                
+                                <p>$ {{product.price}}</p>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+  </div>
+</section>
+<!-- Latest Product End -->
+
+
+
+
+<!-- Features Section Begin -->
+<section class="features-section spad">
+    <div class="features-ads">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="single-features-ads first">
+              <img src="{% static 'img/icons/f-delivery.png' %}" alt="">
+              <h4>Free shipping</h4>
+              <p>
+                Fusce urna quam, euismod sit amet mollis quis, vestibulum quis
+                velit. Vesti bulum mal esuada aliquet libero viverra cursus.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="single-features-ads second">
+              <img src="{% static 'img/icons/coin.png' %}"alt="">
+              <h4>100% Money back</h4>
+              <p>
+                Urna quam, euismod sit amet mollis quis, vestibulum quis velit.
+                Vesti bulum mal esuada aliquet libero viverra cursus.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="single-features-ads">
+              <img src="{% static 'img/icons/chat.png' %}" alt="">
+              <h4>Online support 24/7</h4>
+              <p>
+                Urna quam, euismod sit amet mollis quis, vestibulum quis velit.
+                Vesti bulum mal esuada aliquet libero viverra cursus.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+  <!-- Features Section End -->
+
+  {% endblock content %}
